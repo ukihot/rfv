@@ -33,6 +33,10 @@ module.exports = {
     "@typescript-eslint",
   ],
   rules: {
+    "react-hooks/exhaustive-deps": [
+      warn,
+      { additionalHooks: "(useRecoilCallback|useRecoilTransaction_UNSTABLE)" },
+    ],
     "prefer-arrow/prefer-arrow-functions": [
       "error",
       {

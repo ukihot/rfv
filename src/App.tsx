@@ -1,19 +1,41 @@
-import { Card, Text, Metric, Flex, ProgressBar } from "@tremor/react";
+import { Card, Metric, Switch } from "@tremor/react";
+import { useRecoilState } from "recoil";
+import * as atoms from "./components/atoms";
+export interface AppProps {
+  members: MembersProps[];
+}
+interface MembersProps {
+  id: number;
+  name: string;
+}
 
-const App = () => {
+const App = ({ members }: AppProps) => {
+  const [playerStatus, setPlayerStatus] = useRecoilState(
+    atoms.playerStatusState
+  );
+
+  const handleToggle = (player: string) => {
+    setPlayerStatus((prevPlayerStatus) => ({
+      ...prevPlayerStatus,
+      [player]: !prevPlayerStatus[player],
+    }));
+  };
   return (
     <>
-      <Card className="max-w-xs mx-auto">
-        <Text>Sales</Text>
-        <Metric>$ 71,465</Metric>
-        <Flex className="mt-4">
-          <Text>32% of annual target</Text>
-          <Text>$ 225,000</Text>
-        </Flex>
-        <ProgressBar value={32} className="mt-2" />
-      </Card>
+      <h3>Dog</h3>
+      {Array.from({ length: 7 }, (_, index) => index + 1).map((dogNumber) => (
+        <Card className="max-w-xs mx-auto" key={`dog${dogNumber}`}>
+          <Switch
+            id="switch"
+            name="switch"
+            checked={playerStatus[`dog${dogNumber}`]}
+            onChange={() => handleToggle(`dog${dogNumber}`)}
+          />
+          <Metric>{`dog${dogNumber}`}</Metric>
+        </Card>
+      ))}
     </>
   );
-}
+};
 
 export default App;
